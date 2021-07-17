@@ -12,9 +12,6 @@
     - [while](#while)
     - [case](#case)
     - [select](#select)
-    - [getopt](#getopt)
-    - [getopts](#getopts)
-* [重定向](#重定向)
 * [切割参数](#切割参数)
 * [切割字符串](#切割字符串)
 * [字符串替换](#字符串替换)
@@ -126,6 +123,10 @@ array=([one]=1 [six]=liu)
 ```
 
 ```sh
+FLAGS=( --foo --bar='baz' )
+```
+
+```sh
 declare -A array
 array[one]=1
 array[six]=wu
@@ -139,6 +140,11 @@ ${array[one]}
 # 获取所有key
 ${!array[*]}
 ${!array[@]}
+```
+
+### 操作map
+```sh
+array+=(--greeting="Hello ${name}")
 ```
 
 # if
@@ -295,97 +301,6 @@ select var in "dog" "cat" "bee"; do
 done
 ```
 
-# getopt
-### 语法
-* 如果某个短选项的参数是可选的, 那么它的参数必须紧跟在选项名后面, 不能使用空格分开
-* 如果某个长选项的参数是可选的, 那么它的参数必须使用"="连接
-
-### 例子
-```sh
-parameters=$(getopt -o la:r:: --long list,add:,remove:: -n "$0" -- "$@")
-# parameters=$(getopt -o la:r:: -l list,add:,remove:: -n "$0" -- "$@")
-# parameters=$(getopt --short la:r:: --longoptions list,add:,remove:: -n "$0" -- "$@")
-[ $? != 0 ] && exit 1
-
-# 将$parameters设置为位置参数
-eval set -- "$parameters"
-
-while true ; do
-    case "$1" in
-        -l|--list)   #不带参数
-            echo "list"
-            shift
-            ;;
-        -a|--add)   #带参数
-            echo "-a $2"
-            shift 2
-            ;;
-        -r|--remove)   #带可选参数
-            case "$2" in
-                "") echo "-r without parameter" ;;
-                *) echo "parameter of -r is $2";;
-            esac
-            shift 2
-            ;;
-        --)
-            case "$2" in
-                "") ;;
-                *) echo "after -- is $2";;
-            esac
-            break
-            ;;
-        *) 
-            echo "wrong"
-            exit 1
-            ;;
-    esac
-done
-```
-
-# getopts
-### 语法
-**`while getopts :xyn: name`**  
-x、y和n是选项. 在本例中, 第一个选项由一个冒号引导, 表示getopts不报告错误信息. 如果选项后有一个冒号, 表示该选项需要一个参数. 参数是一个不用短划线引导的词. -n选项需要一个参数  
-遇到不含短划线的选项时, getopts就认为选项列表已结束  
-每次被调用时, getopts都将找到的下一个选项放到变量name中(这个变量名可任意选择). 如果遇到非法变量, getopots就将name的值设为问号  
-getopts函数提供两个变量来保持参数的记录: `OPTIND`和`OPTARG`
-* `OPTIND`是一个专用变量, 初始化为1, 每次getopts处理完一个命令行参数后, OPTIND就增加为getopts下一个要处理的参数的序号
-* `OPTARG`变量包含了合法参数的值
-
-### 例子
-```sh
-#!/bin/bash  #test.sh
-while getopts "a:bc" arg   #选项后面的冒号表示该选项需要参数
-do
-    case $arg in
-        a)
-            echo "a's arg:$OPTARG"        #参数存在$OPTARG中
-            ;;
-        b)
-            echo "b"
-            ;;
-        c)
-            echo "c"
-            ;;
-        ?)  #当有不认识的选项的时候arg为?
-            echo "unkonw argument"
-            exit 1
-            ;;
-    esac
-done
-```
-
-# 重定向
-0表示标准输入, 1表示标准输出, 2表示错误输出
-* 错误信息应重定向到错误输出, 而不是直接打印
-```sh
-if [[ "$#" > 1 ]]; then
-    echo 'Error' >&2
-else
-    echo 'OK'
-fi
-```
-
 # 切割参数
 * `${@:begin}` 从begin开始, 取后面所有的位置参数
 * `${@:begin:count}` 从begin开始, 取后面count个的位置参数
@@ -462,11 +377,11 @@ echo '<<< echo $x >>> displays the value of x, which is' "$x"
 
 Expression             | Example                           | increase                     | Comment
 ---------------------- | --------------------------------- | ---------------------------- | -------
-$((算术式))            | r=$((2+5\*8)) <br> $((${j:-8}+2)) | num=$((num+1))               | -
-expr 算术式            | r=\`expr 4 + 5\`                  | num=\`expr $num + 1\`        | 加号左右必须得有空格
-$[算术式]              | r=$[4+5]                          | -                            | -
+$((算术式))            | r=$((2+5\*8)) <br> $((${j:-8}+2)) | num=$((num+1))               | 最推荐使用, 括号中使用变量无需`$`
+expr 算术式            | r=\`expr 4 + 5\`                  | num=\`expr $num + 1\`        | 切勿使用, 加号左右必须得有空格
+$[算术式]              | r=$[4+5]                          | -                            | 切勿使用
+let 算术式             | let r=8+16                        | let num++ <br> let num=num+1 | 切勿使用
 declare -i 变量=算术式 | declare -i r=8+16                 | -                            | -
-let 算术式             | let r=8+16                        | let num++ <br> let num=num+1 | -
 
 # 特殊变量
 变量 | 作用说明
@@ -500,7 +415,31 @@ ${var:+value}   | 返回value    | 返回null               | 返回null        
 test   | 需要         | `!` `-a` `-o`    | `-eq` `-gt` `-lt` `-ge` `-le`                       | `=` `==` `!=`    | 不支持         | 
 [ ]    | 需要         | `!` `-a` `-o`    | `-eq` `-gt` `-lt` `-ge` `-le `                      | `=` `==` `!=`    | 不支持         | 兼容性高
 [[ ]]  | 需要         | `!` `&&` `\|\|`  | `-eq` `-gt` `-lt` `-ge` `-le` `=` `>` `<` `>=` `<=` | `=` `==` `!=`    | 支持           | 较新版本才支持
-(( ))  | 不需要       | `!` `&&` `\|\|`  | `=` `>` `<` `>=` `<=`                               | `=` `==` `!=`    | 不支持         | 
+(( ))  | 不需要       | `!` `&&` `\|\|`  | `=` `>` `<` `>=` `<=`                               | `=` `==` `!=`    | 不支持         | 用于整数的比较
+
+```sh
+# [[ ]] 可以使用正则表达式
+if [[ "filename" =~ ^[[:alnum:]]+name ]]; then
+  echo "Match"
+fi
+```
+
+```sh
+# 整数比较最好使用 (( ))
+# 使用 [[ ]] 来比较的话, 使用 -gt 来比较, 而不是 >
+### 因为 [[ ]] 中的 < 执行的是字典比较
+# 下面的例子不会有输出
+a=33
+if [[ $a > 4 ]]; then
+    echo 'OK'
+fi
+
+# 下面的例子会输出OK
+a=33
+if [[ $a -gt 4 ]]; then
+    echo 'OK'
+fi
+```
 
 ### 整数值比较操作符含义
 * -eq: 等于(Equal)
@@ -540,5 +479,5 @@ test   | 需要         | `!` `-a` `-o`    | `-eq` `-gt` `-lt` `-ge` `-le`      
 * `file1 -ef file2` file1和file2inode相同
 
 ### 字符串检查
-* `-z string` 字符串长度为0
-* `-n string` 字符串长度不为0
+* `-z string` (Zero)字符串长度为0
+* `-n string` (Not zero)字符串长度不为0

@@ -5,7 +5,7 @@
 * **d** [`declare`](#declare) [`df`](#df) [`disown`](#disown) [`du`](#du)
 * **e** [`echo`](#echo) [`eval`](#eval) [`export`](#export)
 * **f** [`fallocate`](#fallocate) [`fdisk`](#fdisk) [`ffmpeg`](#ffmpeg) [`fg`](#fg) [`file`](#file) [`fim`](#fim) [`find`](#find) [`finger`](user.md/#查看用户) [`for`](shell.md/#for) [`free`](#free)
-* **g** [`getopt`](shell.md/#getopt) [`getopts`](shell.md/#getopts) [`grep`](#grep) [`groupadd`](user.md/#增加组) [`groupdel`](user.md/#删除组) [`groupmod`](user.md/#修改组) [`gpasswd`](user.md/#修改组) [`gzip`](#gzip)
+* **g** [`getopt`](#getopt) [`getopts`](#getopts) [`grep`](#grep) [`groupadd`](user.md/#增加组) [`groupdel`](user.md/#删除组) [`groupmod`](user.md/#修改组) [`gpasswd`](user.md/#修改组) [`gzip`](#gzip)
 * **h** [`hash`](#hash) [`head`](#head)
 * **i** [`id`](user.md/#查看用户) [`if`](shell.md/#if) [`ifconfig`](#ifconfig) [`imagemagick`](#imagemagick)
 * **j** [`jobs`](#jobs) [`join`](#join) [`journalctl`](systemd.md/#日志管理) [`jq`](#jq)
@@ -202,7 +202,7 @@ $ cut -d " " -f 2- --complement file
 设置变量的值或属性, 参数中没有变量的话, 则会打印所有符合条件的变量
 
 ### 语法
-**`declare [+/-][rxi] [variable[=value]]`**
+**`declare [-fFgp] [+/-][aAilnrux] [variable[=value]]`**
 * `-f` 限制为仅对函数起作用, 如`declare -fp PS1`不会有输出
 * `-F` 仅显示函数名, 不显示具体内容
 * `-g` 在函数中创建全局变量
@@ -230,6 +230,12 @@ declare -i a="123"
 $ declare +i a
 $ declare -p a
 declare -- a="123"
+```
+
+```sh
+# 定义环境变量推荐使用export
+# 定义只读的环境变量使用declare
+declare -xr ORACLE_SID='PROD'
 ```
 
 # df
@@ -320,7 +326,7 @@ $ PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 ```
 
 # eval
-会将命令执行一次之后再次执行
+会将命令执行一次之后再次执行, 在shell脚本中应避免使用
 
 ### 例子
 ```sh
@@ -453,6 +459,86 @@ $ find . -xtype l -exec rm {} \;
 # free
 * `-h` 以MB, GB为单位
 
+# getopt
+### 语法
+* 如果某个短选项的参数是可选的, 那么它的参数必须紧跟在选项名后面, 不能使用空格分开
+* 如果某个长选项的参数是可选的, 那么它的参数必须使用"="连接
+
+### 例子
+```sh
+parameters=$(getopt -o la:r:: --long list,add:,remove:: -n "$0" -- "$@")
+# parameters=$(getopt -o la:r:: -l list,add:,remove:: -n "$0" -- "$@")
+# parameters=$(getopt --short la:r:: --longoptions list,add:,remove:: -n "$0" -- "$@")
+[ $? != 0 ] && exit 1
+
+# 将$parameters设置为位置参数
+eval set -- "$parameters"
+
+while true ; do
+    case "$1" in
+        -l|--list)   #不带参数
+            echo "list"
+            shift
+            ;;
+        -a|--add)   #带参数
+            echo "-a $2"
+            shift 2
+            ;;
+        -r|--remove)   #带可选参数
+            case "$2" in
+                "") echo "-r without parameter" ;;
+                *) echo "parameter of -r is $2";;
+            esac
+            shift 2
+            ;;
+        --)
+            case "$2" in
+                "") ;;
+                *) echo "after -- is $2";;
+            esac
+            break
+            ;;
+        *) 
+            echo "wrong"
+            exit 1
+            ;;
+    esac
+done
+```
+
+# getopts
+### 语法
+**`while getopts :xyn: name`**  
+x、y和n是选项. 在本例中, 第一个选项由一个冒号引导, 表示getopts不报告错误信息. 如果选项后有一个冒号, 表示该选项需要一个参数. 参数是一个不用短划线引导的词. -n选项需要一个参数  
+遇到不含短划线的选项时, getopts就认为选项列表已结束  
+每次被调用时, getopts都将找到的下一个选项放到变量name中(这个变量名可任意选择). 如果遇到非法变量, getopots就将name的值设为问号  
+getopts函数提供两个变量来保持参数的记录: `OPTIND`和`OPTARG`
+* `OPTIND`是一个专用变量, 初始化为1, 每次getopts处理完一个命令行参数后, OPTIND就增加为getopts下一个要处理的参数的序号
+* `OPTARG`变量包含了合法参数的值
+
+### 例子
+```sh
+#!/bin/bash  #test.sh
+while getopts "a:bc" arg   #选项后面的冒号表示该选项需要参数
+do
+    case $arg in
+        a)
+            echo "a's arg:$OPTARG"        #参数存在$OPTARG中
+            ;;
+        b)
+            echo "b"
+            ;;
+        c)
+            echo "c"
+            ;;
+        ?)  #当有不认识的选项的时候arg为?
+            echo "unkonw argument"
+            exit 1
+            ;;
+    esac
+done
+```
+
 # grep
 ### 语法
 * `-A <number>` 除了当前行, 还输出当前行 **后面** number行
@@ -543,7 +629,8 @@ $ kill -9 PID
 **`ln [-s] [链接指向的文件] [链接名]`**
 
 # local
-定义局部变量, 使变量仅在函数内部有效. 且咯擦了只能在函数内使用
+定义局部变量, 使变量仅在函数内部有效. 且local只能在函数内使用  
+在执行一个脚本`bash file.sh`时, file.sh中的变量无需定义为local, 因为执行脚本会启动一个子进程, 与当前shell是两个独立的子shell  
 
 # locate
 在数据库(/var/lib/mlocate/mlocate.db)中查找符合条件的文档, 更新数据库使用`updatedb`

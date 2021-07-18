@@ -86,8 +86,18 @@ $ chkconfig --add httpd
 ```
 
 # chmod
+如果提供4位八进制数, 则说明更改 [特殊权限](filesystem.md/#特殊权限)
+
 ### 语法
 * `-R` 对目前目录下的所有文件与子目录进行相同的权限变更
+
+### 例子
+```sh
+$ chmod 4700 file
+$ ll
+-rws------ 1 ypl ypl    0 Jul 18 21:21 file
+
+```
 
 # chown
 新文件所有者和新文件所属组可以省略一个, 但是冒号不能省

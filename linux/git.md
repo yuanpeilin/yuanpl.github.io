@@ -124,7 +124,7 @@ git config --global alias.cp      cherry-pick
 git config --global alias.di      diff
 git config --global alias.dc      'diff --cached'
 git config --global alias.dn      'diff --name-status'
-git config --global alias.ds      'diff --stat'
+git config --global alias.ds      'diff --stat --stat-width=150'
 git config --global alias.ft      fetch
 git config --global alias.hash    hash-object
 git config --global alias.last    'show --stat HEAD'
@@ -155,6 +155,7 @@ git config --global color.ui auto #设置颜色, 可选值有 false auto always
 git config --global core.editor vim
 git config --global core.excludesfile '~/.gitignore'
 git config --global core.pager '' #设置分页程序, 默认为less
+git config --global diff.statGraphWidth 10
 git config --global init.defaultBranch master
 git config --global merge.conflictstyle merge #可选 diff3 或 merge
 git config --global pull.rebase true

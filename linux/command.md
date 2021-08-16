@@ -15,7 +15,7 @@
 * **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohub`](#nohub)
 * **p** [`pandoc`](#pandoc) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
 * **r** [`rsync`](#rsync) [`runlevel`](#runlevel)
-* **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`shopt`](#shopt) [`sort`](#sort) [`source`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
+* **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set`](#set) [`shopt`](#shopt) [`sort`](#sort) [`source`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
 * **t** [`tail`](#tail) [`tar`](#tar) [`tee`](#tee) [`timedatectl`](systemd.md/#timedatectl) [`top`](#top) [`tr`](#tr) [`trap`](#trap) [`tree`](#tree) [`truncate`](#truncate) [`type`](#type)
 * **u** [`ufw`](#ufw) [`uniq`](#uniq) [`uptime`](#uptime) [`useradd`](user.md/#增加用户) [`userdel`](user.md/#删除用户) [`usermod`](user.md/#修改用户)
 * **w** [`whereis`](#whereis) [`while`](shell.md/#while)
@@ -980,6 +980,26 @@ while [ $COUNT –lt  $NUMBER ]; do
     shift # $2 become $1
 done
 ```
+
+# set
+设置shell选项, 设置的选项可以在[`$-`](shell.md/#特殊变量)变量中找到, 一般为`himBHs`
+
+### 语法
+* `+/- <option>` 使用`-`启用选项, `+`关闭选项
+* `-o/+o <option name>`  使用`-`启用选项, `+`关闭选项
+
+<br>
+
+* `B(braceexpand)` 扩展大括号
+* `e(errexit)` 如果某个命令返回非0值, 报错返回, 不执行之后的命令(不适用于管道, 管道只看最后一个命令返回值)
+* `h(hashall)` [hash](#hash)所有的命令
+* `H(histexpand)` 允许使用`!数字`的形式来执行历史命令
+* `i`
+* `m(monitor)` 启用job控制
+* `pipefail` 如果有命令出错管道返回非0值, 和`e(errexit)`一起用(但是整个管道的命令都会执行完)
+* `s`
+* `u(nounset)` 遇到未定义的变量就报错
+* `x(xtrace)` 在输出运行的结果前打印命令及其参数, 用于调试
 
 # shopt
 显示和设置shell中的行为选项

@@ -33,7 +33,7 @@
 
 
 # add
-* **`git add [-f | --force] <file>`**
+* **`git add <-f | --force> <file>`**
 * **`git add <-p | --patch>`** 按照补丁来添加修改
 * **`git add <-u | --update> <file>`** 只添加已追踪文件, 不添加新增文件
 * **`git add --renormalize <file>`** 设置autocrlf之后更新换行符
@@ -445,6 +445,7 @@ git config --global pull.rebase true
 * **`git update-ref refs/heads/master <SHA1>`** 更新引用
 
 ### verify-pack
+* **`git verify-pack -v <.idx file path>`** 查看包的详细信息, 前三列为`SHA1` `object type` `object size(byte)`
 
 ### write-tree
 * **`git write-tree`** 根据index生成一个tree对象

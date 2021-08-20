@@ -1,6 +1,6 @@
 * **a** [`at`](#at)
 * **b** [`bg*`](#bg)
-* **c** [`case`](shell.md/#case) [`cat`](#cat) [`chattr`](#chattr) [`chgrp`](#chgrp) [`chkconfig`](#chkconfig) [`chmod`](#chmod) [`chown`](#chown) [`col`](#col) [`corntab`](#corntab) [`cp`](#cp) [`curl`](#curl) [`cut`](#cut)
+* **c** [`case`](shell.md/#case) [`cat`](#cat) [`chattr`](#chattr) [`chgrp`](#chgrp) [`chkconfig`](#chkconfig) [`chmod`](#chmod) [`chown`](#chown) [`col`](#col) [`compgen*`](#compgen) [`complete*`](#complete) [`compopt*`](#compopt) [`corntab`](#corntab) [`cp`](#cp) [`curl`](#curl) [`cut`](#cut)
 * **d** [`declare*`](#declare) [`df`](#df) [`disown`](#disown) [`du`](#du)
 * **e** [`echo*`](#echo) [`eval*`](#eval) [`export*`](#export)
 * **f** [`fallocate`](#fallocate) [`fdisk`](#fdisk) [`ffmpeg`](#ffmpeg) [`fg*`](#fg) [`file`](#file) [`fim`](#fim) [`find`](#find) [`finger`](user.md/#查看用户) [`for`](shell.md/#for) [`free`](#free)
@@ -116,6 +116,130 @@ $ ll
 ```sh
 $ man man | col-b > man_help
 ```
+
+# compgen
+根据不同的word生成匹配word的补全规范(completion specification, compspec)
+
+### 语法
+**`compgen [-abcdefgjksuv] [-o option] [-A action] [-G globpat] [-W wordlist]  [-F function] [-C command] [-X filterpat] [-P prefix] [-S suffix] [word]`**
+
+### 例子
+```sh
+$ compgen -W "help helpp test teest" -- te
+test
+teest
+$ compgen -W "help helpp test teest" -- tes
+test
+
+$ compgen -W "help helpp test teest" -- he
+help
+helpp
+$ compgen -W "help helpp test teest" -- help
+help
+helpp
+```
+
+# complete
+和自动补全有关的文件为
+* /etc/bash_completion
+* /usr/share/bash-completion/
+* /etc/bash_completion.d/
+
+parameter    | description
+------------ | -----------
+`COMP_WORDS` | 数组, 存放当前命令行中输入的所有单词
+`COMP_CWORD` | 整数, 当前输入的单词在`COMP_WORDS`中的索引
+`COMP_LINE`  | 字符串, 当前的命令行输入字符
+`COMPREPLY`  | 数组, 补全规范数组
+
+### 语法
+**`complete [-abcdefgjksuv] [-pr] [-DE] [-o option] [-A action] [-G globpat] [-W wordlist]  [-F function] [-C command] [-X filterpat] [-P prefix] [-S suffix] [name ...]`**
+* `-p [name]` 显示某个命令的补全规范; 若不加`name`参数, 则打印所有的补全规范
+* `-r <name>` 移除某个补全规范
+
+<br>
+
+* `-A <action>` 使用一些预定义的补全规范
+    - `alias` alias names; 等同于`-a`
+    - `builtin` names of shell builtin commands; 等同于`-b`
+    - `command` command names; 等同于`-c`
+    - `directory` directory names(当前路径下目录名); 等同于`-d`
+    - `export` names of exported shell variables; 等同于`-e`
+    - `file` file names(当前路径下文件名); 等同于`-f`
+    - `group` group names; 等同于`-g`
+    - `job` job names; 等同于`-j`
+    - `keyword` shell reserved words; 等同于`-k`
+    - `service` service names; 等同于`-s`
+    - `setopt` valid arguments for the `-o option` to the [set](#set) builtin
+    - `shopt` shell option names as accepted by the [shopt](#shopt) builtin
+    - `user` user names; 等同于`-u`
+    - `variable` names of all shell variables; 等同于`-v`
+* `-o <option>` 设置自动补全的一些行为
+    - `dirnames` 如果没有对应的补全规范, 就用当前路径下的目录作为补全规范
+    - `filenames` 如果没有对应的补全规范, 就用当前路径下的文件作为补全规范
+    - `nosort`
+    - `nospace` 自动补全后不加空格
+* `-F <function name>` 将函数中的`COMPREPLY`作为补全规范
+* `-P <prefix>` 定义补全后的前缀
+* `-S <suffix>` 定义补全后的后缀
+* `-W <wordlist>` 将`wordlist`中的单词作为补全规范
+
+### 例子
+```sh
+$ complete -c www
+
+$ www un<tab>
+unalias              unattended-upgrades  unflatten            uniq                 unix2mac             unlink               unpack200            unsquashfs           unxz                 
+uname                uncompress           unicode_start        unity-scope-loader   unix_chkpwd          unlzma               unset                until                unzip                
+unattended-upgrade   unexpand             unicode_stop         unix2dos             unix_update          unmkinitramfs        unshare              unwrapdiff           unzipsfx
+```
+
+```sh
+$ complete -p foobar
+complete -F _foobar foobar
+
+$ complete -r foobar
+$ complete -p foobar
+bash: complete: foobar: no completion specification
+```
+
+```sh
+# 一般将自动补全脚本放在 /etc/bash_completion.d/ 目录下
+# 需要source, 脚本才能起作用
+$ cat foobar
+_foobar(){
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "help helpp test teest" -- $cur) )
+}
+complete -F _foobar foobar
+```
+
+```sh
+# 对于option和parameter采用不同的候选补全列表
+_todo() {
+    local cur prev opts task_numbers
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="-a --add -c --clean -d --done -h --help -i --insert -l --list -L --LIST -r --remove"
+    task_numbers=$(todo -l | awk '{ if(NF > 1){printf("%s ", $2)} }')
+
+    case "${prev}" in
+        -a | --add) return ;;
+        -c | --clean) return ;;
+        -d | --done) COMPREPLY=( $(compgen -W "${task_numbers}" -- ${cur}) ) ;;
+        -h | --help) return ;;
+        -i | --insert) return ;;
+        -l | --list) return ;;
+        -L | --LIST) return ;;
+        -r | --remove) COMPREPLY=( $(compgen -W "${task_numbers}" -- ${cur}) ) ;;
+        todo) COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) ) ;;
+        # --) COMPREPLY=( $(compgen -df -- ${cur}) ) ;;
+    esac
+}
+complete -F _todo todo
+```
+
+# compopt
 
 # corntab
 配置文件位于 */etc/init.d/crond*, RHEL将任务存储在 */var/spool/cron/用户名* , Debian将任务存储在 */var/spool/cron/crontabs/用户名*  

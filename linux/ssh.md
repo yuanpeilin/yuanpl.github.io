@@ -1,7 +1,7 @@
 # 文件结构
 ```
 .ssh/                 权限为700
-├── authorized_keys
+├── authorized_keys   权限必须为600
 ├── id_rsa            权限必须为600
 ├── id_rsa.pub
 └── known_hosts
@@ -13,6 +13,7 @@
 
 ### 配置
 配置文件位于 */etc/ssh/sshd_config*
+
 ```sh
 PermitRootLogin no # 禁止root登录
 ClientAliveInterval 600 # 断线重连时间

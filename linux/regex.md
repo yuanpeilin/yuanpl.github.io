@@ -1,7 +1,7 @@
-# 目录
-- [通配符](#通配符)
-- [BRE](#bre)
-- [PCRE](#pcre)
+- [元字符](#元字符)
+- [BRE 中括号](#bre)
+- [PCRE 斜杠](#pcre)
+- [高级用法](#高级用法)
 
 
 
@@ -9,9 +9,9 @@
 
 
 
-# 通配符
+# 元字符
 
-Symbol                          | Descriptio
+Symbol                          | Description
 ------------------------------- | ----------------------------
 `*`                             | 任意长度的字符, 0个或0个以上
 `?`                             | 0个或1个字符字符
@@ -57,3 +57,13 @@ Symbol | Description
 `\S`   | [^ \\t\\r\\n\\f]
 `\w`   | [a-zA-Z]
 `\W`   | [^a-zA-Z]
+
+# 高级用法
+`\number`等同于第number个括号中的字符
+
+```sh
+$ echo 'abcddeffghiii' | grep -Eo '(.)\1'
+dd
+ff
+ii
+```

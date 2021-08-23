@@ -804,7 +804,7 @@ $ kill -9 PID
 **`ln [-s] [链接指向的文件] [链接名]`**
 
 # local
-定义局部变量, 使变量仅在函数内部有效. 且local只能在函数内使用  
+定义局部变量, 使变量仅在函数内部有效. 且local只能在函数内使用, 等同于`readonly`  
 在执行一个脚本`bash file.sh`时, file.sh中的变量无需定义为local, 因为执行脚本会启动一个子进程, 与当前shell是两个独立的子shell  
 
 # locate
@@ -1351,7 +1351,7 @@ $ tr -d '\r' file
 
 # trap
 ### 语法
-* `trap ' command' singal` 自定义进程收到系统发出的指定信号后, 将执行command, 而不会执行原操作
+* `trap 'command' singal` 自定义进程收到系统发出的指定信号后, 将执行command, 而不会执行原操作
 * `trap '' singal` 忽略信号的操作
 * `trap '-' singal` 恢复原信号的操作
 

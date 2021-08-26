@@ -23,32 +23,27 @@
 
 
 
-add
-====
+# add
 * **`git add <-f | --force> <file>`**
 * **`git add <-p | --patch>`** 按照补丁来添加修改
 * **`git add <-u | --update> <file>`** 只添加已追踪文件, 不添加新增文件
 * **`git add --renormalize <file>`** 设置autocrlf之后更新换行符
 
-am
-====
+# am
 * **`git am 0001-limit-log-function.patch`** Apply Mailbox, 应用一个补丁(format-patch生产的补丁)
 * **`git am -3 0001-seeing-if-this-helps-the-gem.patch`** 使用三方合并应用补丁
 
-apply
-=====
+# apply
 * **`git apply /tmp/patch-ruby-client.patch`** 应用一个补丁(兼容diff生成的补丁)
 * **`git apply --check 0001-seeing-if-this-helps-the-gem.patch`** 检查补丁是否可用
 
-blame
-=====
+# blame
 * **`git blame [--] <file>`** 查看文件每一行修改的时间与作者
 * **`git blame -w [--] <file>`** 忽略空白字符
 * **`git blame -C [--] <file>`** 找出文件中从别的地方复制过来的代码片段的原始出处
 * **`git blame -L <n,m> [--] <file>`** 查看文件n到m行修改的时间与作者
 
-branch
-======
+# branch
 * **`git branch`** 查看所有分支
 * **`git branch <branch_name> [commit_id]`** 新建一个分支并使分支指向对应的提交对象, 默认为当前分支
 * **`git branch --contains --all <commit_id>`** 查看某个commit属于哪个分支
@@ -59,17 +54,14 @@ branch
 * **`git branch --set-upstream-to=origin/<remote_branch> <local_branch>`** 将本地已有分支和远程已有分支关联起来(设置上游分支)
 * **`git branch -vv`** 查看分支详细信息
 
-cat-file
-========
+# cat-file
 * **`git cat-file -p <object>`** 查对象的**内容**
 * **`git cat-file -s <object>`** 查对象的**大小**, 单位为byte
 * **`git cat-file -t <object>`** 查对象的**类型**: tag, commit, tree, blob
 
-check-ignore
-============
+# check-ignore
 
-checkout
-========
+# checkout
 * **`git checkout <branch_name | tag_name>`** 切换分支
 * **`git checkout <remote_branch_name>`** 本地不存在对应的分支, 新建一个跟踪远程的分支并切换
 * **`git checkout <file>`** 将工作区和暂存区的file换成暂存区的file(**动工作区和暂存区(实际只动工作区)**)
@@ -80,28 +72,22 @@ checkout
 * **`git checkout -b <local_branch_name> origin/<remote_branch_name>`** 本地新建一个跟踪远程的分支
 * **`git checkout --conflict=diff3 <file>`** 带有base版本的差异比较
 
-checkout-index
-==============
+# checkout-index
 
-cherry-pick
-===========
+# cherry-pick
 * **`git cherry-pick <commit_id>`** 取出某一个提交应用到当前分支
 
-clone
-=====
+# clone
 * **`git clone --bare <url>`** 克隆一个bare仓库
 * **`git clone -o <name> <url>`** 指定远程仓库名(取代origin)
 
-commit
-======
+# commit
 * **`git commit --amend [--no-edit]`** 修改提交信息或暂存区
 
-commit-tree
-===========
+# commit-tree
 * **`echo <comment> | git commit-tree <tree SHA1>`** 通过tree对象生成一个commit对象
 
-config
-======
+# config
 * **`git config [--system | --global] --list [--show-origin]`** 查看配置与范围. 小范围会覆盖大范围的配置, .git/config的配置变量会覆盖/etc/gitconfig中的配置变量
     - `不加参数`对应的配置文件位于.git/config, 仅对当前仓库生效
     - `--global`选项对应的配置文件位于\~/.gitconfig, 对当前用户的的所有仓库生效
@@ -169,11 +155,9 @@ git config --global pull.rebase true
     path = ~/.gitconfig2
 ```
 
-count-objects
-=============
+# count-objects
 
-diff
-====
+# diff
 * **`git diff [--name-only | --name-status] [commit_id...] [--] [file]`** 
 * **`git diff`** 查看工作区和暂存区的差异(未暂存的修改)
 * **`git diff HEAD`** 查看工作区和版本库差异
@@ -186,37 +170,29 @@ diff
 * **`git diff [-w | --ignore-all-space]`** 忽略所有的空白差异
 * **`git difftool --tool-help`** 系统支持哪些Git Diff插件
 
-diff-index
-==========
+# diff-index
 
-for-each-ref
-============
+# for-each-ref
 
-format-patch
-============
+# format-patch
 * **`git format-patch -M origin/master`** 形成补丁文件(当前分支相对于origin/master的差异)
 
-fsck
-====
+# fsck
 * **`git fsck --full`** 显示出所有没有被其他对象指向的对象
 
-gc
-====
+# gc
 * **`git gc --prune=now --aggressive`** 清理仓库中的孤儿对象
 
-grep
-====
+# grep
 * **`git grep <-c | --count> <sting>`** 只显示匹配的个数
 * **`git grep <-n | --line-number> <string>`** 查找工作区的字符串, 显示 详细内容与行号
 
-hash-object
-===========
+# hash-object
 * **`git hash-object <file>`** 返回对象的SHA1值
 * **`git hash-object -w <file>`** 返回SHA1值的同时将对象写入到数据库中
 * **`git hash-object --stdin`** 从标准输入读取对象的内容, 并返回对象的SHA1值
 
-log
-====
+# log
 * **`git log`** 查看提交历史
 * **`git log <commit_id | branch>`** 查看某个分支的提交历史
 * **`git log -1`** 限制输出长度
@@ -258,8 +234,7 @@ log
 %cr  | 提交日期(距今多长时间)
 %s   | 提交说明
 
-ls-files
-========
+# ls-files
 * **`git ls-files <-c | --cached>`** 查看暂存区(只输出文件名)
 * **`git ls-files <-d | --deleted>`** 查看被删除的文件
 * **`git ls-files <-i | --ignored>`** 查看被忽略的文件
@@ -278,32 +253,26 @@ ls-files
 * **`git ls-files <-u | --unmerged>`** 查看合并冲突时未暂存的文件
 * **`git ls-files --eol [file]`** 查看文件的换行符
 
-ls-remote
-=========
+# ls-remote
 * **`git ls-remote <remote-repo>`** 查看某个远程仓库详细信息(需要网络)
 * **`git ls-remote origin`** 列出远程仓库信息(分支, tag, PR及其的hash值)
 
-ls-tree
-=======
+# ls-tree
 * **`git ls-tree <object>`** 显示树的内容
 * **`git ls-tree -r <object>`** 递归显示树的内容
 
-merge
-=====
+# merge
 * **`git merge <branch_name>`** 合并某分支到当前分支
 * **`git merge --no-ff [-m message] <branch_name>`** --no-ff参数, 表示禁用 **fast forward** 模式
 * **`git merge --squash <branch_name>`** 将某分支上所有的提交合并成一个, 应用到当前分支(只是到暂存区, 且不移动HEAD)
 * **`git merge -Xignore-space-change <branch_name>`** 忽略空白
 
-merge-base
-==========
+# merge-base
 
-merge-file
-==========
+# merge-file
 * **`git merge-file -p <file_path1..3>`** 手动合并单个文件
 
-push
-====
+# push
 * **`git push origin <tag_name>`** 推送标签到远程
 * **`git push origin --tags`** 推送所有标签到远程
 * **`git push origin :refs/tags/<tag_name>`** 删除远程标签
@@ -313,11 +282,9 @@ push
 * **`git push origin :<remote_branch_name>`** 删除远程分支(推送空分支到远程)
 * **`git push origin :refs/tags/<tag_name>`** 删除远程标签
 
-read-tree
-=========
+# read-tree
 
-rebase
-======
+# rebase
 * **`git rebase master`** 将当前分支(主题分支)的修改变基到 **master** 分支(目标分支)上
 * **`git rebase master HEAD`** 将当前分支(主题分支)的修改变基到 **master** 分支(目标分支)上
 * **`git rebase <base_branch> <topic_branc>`** 将主题分支变基到目标分支上(不指定topic_branc则默认为当前分支)
@@ -325,12 +292,10 @@ rebase
 * **`git rebase --onto master server client`** 找出client分支从server分支分歧之后的补丁, 然后把这些补丁在master分支上应用, 让client看起来像直接基于master修改一样
 * **`git rebase -i HEAD~3`** 修改最近三次修改(注意HEAD\~3包含了四次提交)(实际上是当前分支变基到HEAD\~3分支上)
 
-reflog
-======
+# reflog
 * **`git reflog`** 查看所有历史日志
 
-remote
-======
+# remote
 * **`git remote add <repository_name> <ssh | https>`** 使本地仓库与远程仓库关联
 * **`git remote`** 查看所有远程仓库
 * **`git remote -v`** 查看远程仓库信息
@@ -339,8 +304,7 @@ remote
 * **`git remote prune origin --dry-rnu`** 列出仍在跟踪但远程已删除的分支
 * **`git remote set-url origin <url>`** 设置远程仓库地址
 
-reset
-=====
+# reset
 * **`git reset [--hard | --mixed | --soft] HEAD^`** 回退到上一个版本
 * **`git reset [--hard | --mixed | --soft] <commit_id>`** 回退到指定版本
     * `--soft` 不修改working directory和index, 只修改**HEAD**的内容. 本质上是撤销了某一次的commit命令
@@ -348,15 +312,12 @@ reset
     * `--hard` 修改**working directory**和**index**和**HEAD**的内容
 * **`git reset HEAD -- <file>`** 将暂存区的file替换成HEAD指向的file, 可以把提交到暂存区的修改unstaged(**只动暂存区**)
 
-rev-list
-========
+# rev-list
 * **`git rev-list --count <branch name>`** 计算指定分支的提交数量
 
-rev-parse
-=========
+# rev-parse
 
-revert
-======
+# revert
 * **`git revert -n <commit_id>`** 不自动commit
 * **`git revert HEAD`** 撤销HEAD的修改
 * **`git revert HEAD~`** 撤销HEAD~的修改(不会撤销HEAD的修改, 只撤销一个commit的修改)
@@ -364,8 +325,7 @@ revert
 * **`git revert --no-commit`** 不自动生成反向修改的提交, 只改动暂存区
 * **`git revert <commit_id1>..<commit_id2>`** 撤销一系列提交, 左开右闭, 不包括1包括2
 
-show
-====
+# show
 * **`git show <tag_name>`** 查看标签具体信息
 * **`git show --no-patch <reversion id>`** 查看某个版本信息
 * **`git show <reversion id>:<file>`** 查看某个版本中的某个文件
@@ -374,11 +334,9 @@ show
     - `2`是当前分支的版本
     - `3`是合并来的分支的版本
 
-show-ref
-========
+# show-ref
 
-stash
-=====
+# stash
 * **`git stach`** 
 * **`git stash [-u | --include-untracked]`** stash未追踪的文件
 * **`git stash push [-m 'message'] [-- file]`** stash指定文件
@@ -389,17 +347,14 @@ stash
 * **`git stash drop [stash]`** 删除stash
 * **`git stash clear`** 删除所有stash
 
-status
-======
+# status
 * **`git status [ -s | --short]`** 简单展示状态: 左栏为暂存区的状态, 右栏为工作区的状态
 
-symbolic-ref
-============
+# symbolic-ref
 * **`git symbolic-ref HEAD`** 查看HEAD的值
 * **`git symbolic-ref HEAD refs/heads/test`** 设置HEAD的值
 
-tag
-====
+# tag
 * **`git tag`** 查看所有标签(可以不带-l)
 * **`git tag <-l | --list> v1.8.5*`** 按照特定模式查找标签
 * **`git tag <tag_name> [commit_id]`** 新建一个lightweight标签, 本质是一个指向commit对象的指针, 使用`git cat-file -t`查看为commit
@@ -407,31 +362,25 @@ tag
 * **`git tag -m <tag_description> <tag_name> [commit_id]`** 新建一个annotated标签, 是一个tag对象
 * **`git tag -d <tag_name>`** 删除本地标签
 
-update-index
-============
+# update-index
 * **`git update-index --add --cacheinfo <mode bit> <SHA1> <file name>`** 以数据库中文件为对象, 添加到index
 
-update-ref
-==========
+# update-ref
 * **`git update-ref refs/heads/master <SHA1>`** 更新引用
 
-verify-pack
-===========
+# verify-pack
 * **`git verify-pack -v <.idx file path>`** 查看包的详细信息, 前三列为`SHA1` `object type` `object size(byte)`
 
-worktree
-========
+# worktree
 * **`git worktree add <path> [commit_id]`** 新建一个worktree
 * **`git worktree list`** 列出所有的worktree
 * **`git worktree move <path> <new-path>`** 移动worktree
 * **`git worktree remove <path>`** 移除某个worktree
 
-write-tree
-==========
+# write-tree
 * **`git write-tree`** 根据index生成一个tree对象
 
-.git目录结构
-============
+# .git目录结构
 ```xml
 .git
 ├── commit_editmsg   <最后一次提交的注释>

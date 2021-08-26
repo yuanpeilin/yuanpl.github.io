@@ -255,7 +255,7 @@ ln_check /home/ypl/workspace/yuanpeilin.github.io/linux/src/vimrc /home/ypl/.vim
 
 todo -l
 
-git_branch() {
+_git_branch() {
     branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //"`"
     if [ "${branch}" != "" ];then
         if [ "${branch}" = "(no branch)" ];then
@@ -264,7 +264,15 @@ git_branch() {
         echo "($branch)"
     fi
 }
-PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\e[00m\] \[\e[01;34m\]\w$(git_branch)\[\e[00m\]\$ '
+_ps_color(){
+    if (($? == 0)); then
+        echo '32'
+    else
+        echo '31'
+    fi
+}
+# PS1='\e[01;$(_ps_color)m\u@\h \e[01;36m\w$(_git_branch)\$ \e[0m'
+PS1='\e[01;$(_ps_color)m\w$(_git_branch)\$ \e[0m'
 
 export JAVA_HOME='/opt/java8/jdk1.8.0_281'
 export PATH=$JAVA_HOME/bin:$PATH

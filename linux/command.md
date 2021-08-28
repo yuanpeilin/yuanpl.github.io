@@ -13,7 +13,7 @@
 * **m** [`man`](#man) [`md5sum`](#md5sum) [`mkdir`](#mkdir) [`mkfs`](#mkfs) [`more`](#more) [`mount`](#mount)
 * **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohub`](#nohub)
 * **p** [`pandoc`](#pandoc) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
-* **r** [`rsync`](#rsync) [`runlevel`](#runlevel)
+* **r** [`read`](#read) [`rsync`](#rsync) [`runlevel`](#runlevel)
 * **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set*`](#set) [`shopt*`](#shopt) [`sort`](#sort) [`source*`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`su`](#su) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
 * **t** [`tail`](#tail) [`tar`](#tar) [`tee`](#tee) [`timedatectl`](systemd.md/#timedatectl) [`top`](#top) [`tr`](#tr) [`trap*`](#trap) [`tree`](#tree) [`truncate`](#truncate) [`type*`](#type)
 * **u** [`ufw`](#ufw) [`uniq`](#uniq) [`uptime`](#uptime) [`useradd`](user.md/#增加用户) [`userdel`](user.md/#删除用户) [`usermod`](user.md/#修改用户)
@@ -1027,6 +1027,45 @@ init,1
     │    ├─python,2518 /sbin/audispd
     │    └─{auditd},2517
     ├─automount,2842
+```
+
+# read
+read从**标准输入**读取数据并保存到给定的变量中, 每次读取一行  
+如果不指定保存数据的变量时, 默认保存在`$REPLY`  
+在文件读完时返回**非0**的状态值, 所以可以用`read`+[`while`](shell.md/#while)遍历文件  
+
+### 语法
+**`read [-ers] [-a array] [-d delim] [-i text] [-n nchars] [-N nchars] [-p prompt] [-t timeout] [-u fd] [name ...]`**
+* `-a array` 将读取到的数据拆分并保存到`array`数组中, 通过`$IFS`分割
+* `-d <delim>` 指定终止符, 默认为换行符. 当终止符出现就停止读取, 终止符不读取
+* `-n <nchars>` 读取`nchars`个字符就结束, 或者遇到终止符就结束
+* `-N <nchars>` 读满`nchars`个字符才结束, 即使遇到终止符也**不**结束
+* `-p <prompt>` 在读取之前输出提示字符`prompt`
+* `-r` 禁止反斜线转义字符
+* `-s` 不输出读取到的内容(输入密码时使用)
+* `-t <timeout>` 设置超时时间, 单位为秒, 可以为小数
+* `-u <fd>` 从指定的[文件描述符 fd](filesystem.md/#重定向)读取, 默认从标准输入读取
+
+### 例子
+```sh
+while read -r line; do
+    echo $line
+done < a.txt
+
+# 进程替换
+while read -r line; do
+    echo "${line}"
+done < <( echo -e "1a\n2bb\n3cc")
+```
+
+```sh
+# #注意# 若文件最后一行没有换行符, 则读不到最后一行
+$ cat -A a 
+abc$
+def
+
+$ while read -r line;do echo "$line"; done <a
+abc
 ```
 
 # rsync

@@ -136,6 +136,7 @@ git config --global help.browser google-chrome
 git config --global help.format web
 git config --global web.browser open
 # 其他
+git config --global help.autocorrect 0
 git config --global color.ui auto #设置颜色, 可选值有 false auto always
 git config --global core.editor vim
 git config --global core.excludesfile '~/.gitignore'

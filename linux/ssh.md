@@ -12,7 +12,8 @@
 - `-t` 分配TTY, 执行远程命令使用
 
 ### 配置
-配置文件位于 */etc/ssh/sshd_config*
+* 客户端配置文件位于 */etc/ssh/ssh_config*
+* 服务器配置文件位于 */etc/ssh/sshd_config*
 
 ```sh
 PermitRootLogin no # 禁止root登录

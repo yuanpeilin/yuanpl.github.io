@@ -14,7 +14,8 @@
 * **u** [`update-index*`](#update-index) [`update-ref*`](#update-ref)
 * **v** [`verify-pack*`](#verify-pack)
 * **w** [`worktree`](#worktree) [`write-tree*`](#write-tree)
-* [`.git目录结构`](#git目录结构)
+* [.git目录结构](#git目录结构)
+* [四种协议](#四种协议)
 
 
 
@@ -420,3 +421,44 @@ git config --global pull.rebase true
     ├── stash
     └── tags/
 ```
+
+# 四种协议
+### 本地(Local)协议
+远程版本库就是同一主机上的另一个目录
+
+```sh
+# 克隆一个本地版本库(加上file://会触发网络传输进程)
+$ git clone /srv/git/project.git
+$ git clone file:///srv/git/project.git
+
+# 增加一个本地版本库到现有的 Git 项目
+$ git remote add local_proj /srv/git/project.git
+```
+
+### HTTP协议
+* **智能HTTP协议** 既支持像`git://`协议一样设置匿名服务, 也可以像SSH协议一样提供传输时的授权和加密. 而且只用一个URL就可以都做到
+* **哑(Dumb)HTTP协议** web服务器仅提供文件服务, 只需要把一个裸版本库放在HTTP根目录，设置一个叫做`post-update`的挂钩就可以了
+
+```sh
+# 设置哑HTTP协议
+$ cd /var/www/htdocs/
+$ git clone --bare /path/to/git_project gitproject.git
+$ cd gitproject.git
+$ mv hooks/post-update.sample hooks/post-update
+$ chmod a+x hooks/post-update
+
+# 克隆HTTP协议的仓库
+$ git clone https://example.com/gitproject.git
+```
+
+### SSH协议
+不支持匿名访问Git仓库, 即便只是读取数据, 也必须通过SSH访问
+
+```sh
+$ git clone ssh://[user@]server/project.git
+$ git clone [user@]server:project.git
+$ git clone git@github.com:yuanpeilin/yuanpeilin.github.io.git
+```
+
+### Git协议
+包含在Git里的一个特殊的守护进程, 监听9418端口, 且缺乏授权机制

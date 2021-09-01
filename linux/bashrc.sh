@@ -223,6 +223,8 @@ alias profile='sudo vim /etc/profile && source /etc/profile'
 alias s='source ~/.bashrc'
 alias shadowsocks='sudo sslocal -c ~/Documents/ss.json -d restart'
 alias 'ss.json'='vim ~/Documents/ss.json'
+alias sctl='sudo systemctl'
+complete -F _systemctl sctl
 alias t1='tree -L 1'
 alias t2='tree -L 2'
 alias t3='tree -L 3'

@@ -1232,7 +1232,7 @@ done
 * `e(errexit)` 如果某个命令返回非0值, 报错返回, 不执行之后的命令(不适用于管道, 管道只看最后一个命令返回值)
 * `h(hashall)` [hash](#hash)所有的命令
 * `H(histexpand)` 允许使用`!数字`的形式来执行历史命令
-* `i`
+* `i` interactive shell, 不可设置
 * `m(monitor)` 启用job控制
 * `pipefail` 如果有命令出错管道返回非0值, 和`e(errexit)`一起用(但是整个管道的命令都会执行完)
 * `s`
@@ -1244,8 +1244,8 @@ done
 
 ### 语法
 * `shopt` 显示所有的行为及其状态
-* `shopt -s <behavior>` 打开行为
-* `shopt -u <behavior>` 关闭行为
+* `shopt -s <behavior>` 打开(set)shell选项
+* `shopt -u <behavior>` 关闭(unset)shell选项
 
 ### 具体行为
 * **extglob** 打开扩展的通配(globbing)
@@ -1300,6 +1300,7 @@ $ sort -k1, 1 | sort -s -k2, 2
 
 ### 语法
 **`su [option] [username]`**
+* `-` `-l` `--login` 切换用户后使用登录式shell
 * `-s <SHELL>` `--shell <SHELL>` 指定shell
 
 # tail

@@ -59,6 +59,10 @@ daemon:*:17937:0:99999:7:::
 * `-s <shell path>` 指定新用户shell类型, 新建时最好指定, 使用[usermod](#usermod)与新建时指定不一样
 * `-u <UID>` 指定新用户的UID
 
+```sh
+$ useradd -d /git/ -g root -s /bin/bash git
+```
+
 ### 删除用户
 **`userdel <User Name>`**
 * `-r` 将用户目录一并删除

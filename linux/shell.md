@@ -467,11 +467,11 @@ Expression               | Example                              | increase      
 
 表达式        | x不存在               | x存在但为null         | x存在且非null | 意图
 ------------- | --------------------- | --------------------- | ------------- | ----
-${x-value}    | 返回默认值value       | 返回x                 | 返回x         | 测存在性, 不测空值
+${x-value}    | 返回默认值value       | 返回x                 | 返回x         | 测存在性, 不测null
 ${x:-value}   | 返回默认值value       | 返回默认值value       | 返回x         | 变量未定义或不存在, 则返回一个默认值
 ${x=value}    | 将x值置为value并返回  | 返回x                 | 返回x         | 变量未定义或不存在, 则为变量设置默认值
 ${x:=value}   | 将x值置为value并返回  | 将x值置为value并返回  | 返回x         | 变量未定义或不存在, 则为变量设置默认值
-${x+value}    | 返回null              | 返回value             | 返回value     | 修改一个已存在变量的值
+${x+value}    | 返回null              | 返回x                 | 返回x         | 修改一个已存在变量的值
 ${x:+value}   | 返回null              | 返回null              | 返回value     | 修改一个已存在变量的值
 ${x?message}  | 返回message并退出脚本 | 返回x                 | 返回x         | 捕获未定义变量造成的异常
 ${x:?message} | 返回message并退出脚本 | 返回message并退出脚本 | 返回x         | 捕获未定义变量造成的异常

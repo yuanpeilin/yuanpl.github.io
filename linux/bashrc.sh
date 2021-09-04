@@ -70,7 +70,7 @@ cd_git_project() {
     if [[ -z $(git status -s) ]]; then
         echo 'No file changed'
     else
-        git status -sb
+        git status -s
     fi
     echo -e '\e[01m--------------------\e[00m'
 }

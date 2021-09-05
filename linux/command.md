@@ -12,7 +12,7 @@
 * **l** [`less`](#less) [`ln`](#ln) [`local*`](#local) [`localectl`](systemd.md/#localectl) [`locate`](#locate) [`loginctl`](systemd.md/#loginctl) [`ls`](#ls) [`lsattr`](#lsattr) [`lsblk`](#lsblk) [`lsof`](#lsof)
 * **m** [`man`](#man) [`md5sum`](#md5sum) [`mkdir`](#mkdir) [`mkfs`](#mkfs) [`more`](#more) [`mount`](#mount)
 * **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohub`](#nohub)
-* **p** [`pandoc`](#pandoc) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
+* **p** [`pandoc`](#pandoc) [`parted`](#parted) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
 * **r** [`read`](#read) [`rsync`](#rsync) [`runlevel`](#runlevel)
 * **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set*`](#set) [`shopt*`](#shopt) [`sort`](#sort) [`source*`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`su`](#su) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
 * **t** [`tail`](#tail) [`tar`](#tar) [`tee`](#tee) [`timedatectl`](systemd.md/#timedatectl) [`top`](#top) [`tr`](#tr) [`trap*`](#trap) [`tree`](#tree) [`truncate`](#truncate) [`type*`](#type)
@@ -958,6 +958,37 @@ nohup命令不会自动把进程变为后台任务, 使用时所以必须加上`
 ```sh
 # 将markdown转换为html
 $ pandoc -s a.md -o a.html
+```
+
+# parted
+### 例子
+```sh
+# 查看磁盘分区情况
+$ sudo parted -l
+Model: ATA CT1000MX500SSD1 (scsi)
+Disk /dev/sda: 1000GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size   File system  Name                  Flags
+ 1      1049kB  107GB   107GB  ntfs         Basic data partition  msftdata
+ 2      107GB   859GB   752GB  ntfs         Basic data partition  msftdata
+ 3      859GB   860GB   538MB  fat32        EFI System Partition  boot, esp
+ 4      860GB   1000GB  141GB  ext4
+
+
+Model: INTEL SSDPEKKW256G8 (nvme)
+Disk /dev/nvme0n1: 256GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End    Size    File system  Name                          Flags
+ 1      1049kB  106MB  105MB   fat32        EFI system partition          boot, esp
+ 2      106MB   123MB  16.8MB               Microsoft reserved partition  msftres
+ 3      123MB   160GB  160GB   ntfs         Basic data partition          msftdata
+ 4      160GB   161GB  587MB   ntfs                                       hidden, diag
 ```
 
 # pgrep

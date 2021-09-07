@@ -114,8 +114,8 @@ git config --global alias.ds      'diff --stat --stat-width=150'
 git config --global alias.ft      fetch
 git config --global alias.hash    hash-object
 git config --global alias.last    'show --stat HEAD'
-git config --global alias.lo      "log --format='%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>' --graph"
-git config --global alias.loa     "log --format='%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>' --graph --all"
+git config --global alias.lo      "log --format='%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>' --graph"
+git config --global alias.loa     "log --format='%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>' --graph --all"
 git config --global alias.ls      ls-files
 git config --global alias.rb      rebase
 git config --global alias.re      remote
@@ -146,6 +146,7 @@ git config --global diff.statGraphWidth 10
 git config --global init.defaultBranch master
 git config --global merge.conflictstyle merge #可选 diff3 或 merge
 git config --global pull.rebase true
+git config --global log.date short #枚举值见 git log --date
 ```
 
 ```sh
@@ -201,7 +202,7 @@ git config --global pull.rebase true
 * **`git log --cc -p -1`** 查看冲突如何被解决
 * **`git log --author=<string>`** 查看指定作者的提交历史
 * **`git log --committer=<string>`** 查看指定提交者的提交历史
-* **`git log --format='%c(yellow)%h%creset %c(auto)%d%creset %s %c(green)(%cr) %c(blue)<%an> <file>'`** 查看某个文件的修改历史
+* **`git log --format='%c(yellow)%h%creset %c(auto)%d%creset %s %c(green)(%cd) %c(blue)<%an> <file>'`** 查看某个文件的修改历史
 * **`git log --grep=<string>`** 查看提交说明中包含指定字符的提交历史
 * **`git log [-p | --patch]`** 以patch的形式查看日志(类似diff, 改动了哪些地方)
 * **`git log --stat`** 查看每一个日志的统计信息(增加多少行, 删除多少行)
@@ -216,6 +217,15 @@ git config --global pull.rebase true
 * **`git log --left-right <branch1>...<branch2>`** 三点: 不同时属于branch1和branch2提交
 * **`git log --pretty=format:"%h - %an, %ar : %s"`** 格式化
 * **`git log --format="%h - %an, %ar : %s"`** 格式化
+* **`git log --date=[default | iso8601 | iso8601-strict | raw | relative | rfc2822 | short | unix]`** `config log.data`设置了此选项的默认值
+    - `default`: `Mon Sep 6 23:27:24 2021 +0800`
+    - `iso8601`: `2021-09-06 23:27:24 +0800`
+    - `iso8601-strict`: `2021-09-06T23:27:24+08:00`
+    - `raw`: `1630942044 +0800`
+    - `relative`: `24 hours ago`
+    - `rfc2822`: `Mon, 6 Sep 2021 23:27:24 +0800`
+    - `short`: `2021-09-06`
+    - `unix`: `1630942044` 强制视为UTC时区
 
 选项 | 说明
 ---- | ---
@@ -232,8 +242,9 @@ git config --global pull.rebase true
 %ar  | 作者修订日期, 按多久以前的方式显示
 %cn  | 提交者的名字
 %ce  | 提交者的电子邮件地址
-%cd  | 提交日期
-%cr  | 提交日期(距今多长时间)
+%cd  | committer date(格式由--date=决定)
+%cr  | committer date, relative format
+%cs  | committer date, short format
 %s   | 提交说明
 
 # ls-files

@@ -132,8 +132,8 @@ sysinfo(){
 # +----------------------------------+
 alias g='clear && git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph -15 && echo ""'
 alias gg='clear && git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph --all -15 && echo ""'
-alias glo='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph'
-alias gloa='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph --all'
+alias glo='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>" --graph'
+alias gloa='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>" --graph --all'
 alias gbr='git branch -vv'
 alias gclone='git clone'
 alias gca='git commit --amend'

@@ -196,28 +196,35 @@ git config --global log.date short #枚举值见 git log --date
 * **`git hash-object --stdin`** 从标准输入读取对象的内容, 并返回对象的SHA1值
 
 # log
-* **`git log`** 查看提交历史
-* **`git log <commit_id | branch>`** 查看某个分支的提交历史
-* **`git log -1`** 限制输出长度
-* **`git log --cc -p -1`** 查看冲突如何被解决
+* **筛选**
+* **`git log <SHA1 | refs>`** 查看某个分支的提交历史
+* **`git log <branch1>..<branch2>`** 两点: 属于branch2但不属于branch1的提交
+* **`git log <branch1>...<branch2>`** 三点: 不同时属于branch1和branch2提交
+* **`git log --left-right <branch1>...<branch2>`** 通过箭头标识提交分别属于那个分支
 * **`git log --author=<string>`** 查看指定作者的提交历史
 * **`git log --committer=<string>`** 查看指定提交者的提交历史
-* **`git log --format='%c(yellow)%h%creset %c(auto)%d%creset %s %c(green)(%cd) %c(blue)<%an> <file>'`** 查看某个文件的修改历史
+* **`git log [--since | --after | --until | --before]=<time>`** 通过时间过滤. time可以是`2008-01-15`或是`2 years 1 day 3 minutes ago`
+    - since/after 指定时间开始, 一直输出到最近的一次提交
+    - 从最开始的提交开始, until/before 指定时间
 * **`git log --grep=<string>`** 查看提交说明中包含指定字符的提交历史
+* **`git log -S <string>`** 查看文件内容中某个字符串的历史(俗称鹤嘴锄pickaxe)
+* **`git log -L :git_deflate_bound:zlib.c`** 查看 zlib.c 文件中`git_deflate_bound`的每一次变更
+
+<br>
+
+* **其他**
+* **`git log --cc -p -1`** 查看冲突如何被解决
+
+<br>
+
+* **格式化输出**
+* **`git log -1`** 限制输出长度
 * **`git log [-p | --patch]`** 以patch的形式查看日志(类似diff, 改动了哪些地方)
 * **`git log --stat`** 查看每一个日志的统计信息(增加多少行, 删除多少行)
 * **`git log --pretty=[oneline | short | full | medium | fuller | raw]`** 格式化日志, oneline最简略, fuller最详细, 默认为full
-* **`git log [--since | --after | --until | --before]=<time>`** 通过时间过滤. time可以是2008-01-15或是2 years 1 day 3 minutes ago
-    * since/after 指定时间开始, 一直输出到最近的一次提交
-    * 从最开始的提交开始, until/before 指定时间
-* **`git log -S <string>`** 查看文件内容中某个字符串的历史(俗称鹤嘴锄pickaxe)
-* **`git log -L :git_deflate_bound:zlib.c`** 查看 zlib.c 文件中`git_deflate_bound` 函数的每一次变更
-* **`git log --oneline --all --graph`** 查看分支图
-* **`git log --oneline --graph <branch1>..<branch2>`** 两点: 属于branch2但不属于branch1的提交
-* **`git log --left-right <branch1>...<branch2>`** 三点: 不同时属于branch1和branch2提交
-* **`git log --pretty=format:"%h - %an, %ar : %s"`** 格式化
-* **`git log --format="%h - %an, %ar : %s"`** 格式化
-* **`git log --date=[default | iso8601 | iso8601-strict | raw | relative | rfc2822 | short | unix]`** `config log.data`设置了此选项的默认值
+* **`git log --format='%c(yellow)%h%creset %c(auto)%d%creset %s %c(green)(%cd) %c(blue)<%an>"`** 格式化
+* **`git log --format='%c(yellow)%h%creset %c(auto)%d%creset %s %c(green)(%cd) %c(blue)<%an> <file>'`** 查看某个文件的修改历史
+* **`git log --date=[default | iso8601 | iso8601-strict | raw | relative | rfc2822 | short | unix]`** 设置时间的格式, `config log.data`设置了此选项的默认值
     - `default`: `Mon Sep 6 23:27:24 2021 +0800`
     - `iso8601`: `2021-09-06 23:27:24 +0800`
     - `iso8601-strict`: `2021-09-06T23:27:24+08:00`
@@ -228,23 +235,21 @@ git config --global log.date short #枚举值见 git log --date
     - `unix`: `1630942044` 强制视为UTC时区
 
 选项 | 说明
----- | ---
-%d   | HEAD指针, 分支等相关信息
-%h   | 提交的完整哈希值
-%h   | 提交的简写哈希值
-%t   | 树的完整哈希值
-%t   | 树的简写哈希值
-%p   | 父提交的完整哈希值
-%p   | 父提交的简写哈希值
-%an  | 作者名字
-%ae  | 作者的电子邮件地址
-%ad  | 作者修订日期(可以用--date=选项 来定制格式)
-%ar  | 作者修订日期, 按多久以前的方式显示
-%cn  | 提交者的名字
-%ce  | 提交者的电子邮件地址
-%cd  | committer date(格式由--date=决定)
+---- | ----
+%h   | abbreviated commit hash
+%H   | commit hash
+%t   | abbreviated tree hash
+%an  | author name
+%ae  | author email
+%ad  | author date (format respects --date= option)
+%ar  | author date, relative
+%as  | author date, short format
+%cn  | committer name
+%ce  | committer email
+%cd  | committer date (format respects --date= option)
 %cr  | committer date, relative format
 %cs  | committer date, short format
+%d   | HEAD指针, 分支等相关信息
 %s   | 提交说明
 
 # ls-files

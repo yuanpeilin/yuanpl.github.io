@@ -5,7 +5,7 @@
 * **e** [`echo*`](#echo) [`eval*`](#eval) [`export*`](#export)
 * **f** [`fallocate`](#fallocate) [`fdisk`](#fdisk) [`ffmpeg`](#ffmpeg) [`fg*`](#fg) [`file`](#file) [`fim`](#fim) [`find`](#find) [`finger`](user.md/#查看用户) [`for`](shell.md/#for) [`free`](#free) [`ftp`](ftp.md)
 * **g** [`getopt`](#getopt) [`getopts*`](#getopts) [`grep`](#grep) [`groupadd`](user.md/#增加组) [`groupdel`](user.md/#删除组) [`groupmod`](user.md/#修改组) [`gpasswd`](user.md/#修改组) [`gzip`](#gzip)
-* **h** [`hash*`](#hash) [`head`](#head)
+* **h** [`hash*`](#hash) [`head`](#head) [`hexdump`](#hexdump)
 * **i** [`id`](user.md/#查看用户) [`if`](shell.md/#if) [`ifconfig`](#ifconfig) [`imagemagick`](#imagemagick)
 * **j** [`jobs*`](#jobs) [`join`](#join) [`journalctl`](systemd.md/#日志管理) [`jq`](#jq)
 * **k** [`kill*`](#kill)
@@ -772,6 +772,13 @@ $ gzip -9 test.txt
 * `-n <number>` 显示开头number行
 * `-n -<number>` 显示所有行除了最后number行
 
+
+# hexdump
+### 例子
+```sh
+# 以16进制显示文件
+$ hexdump -C a.txt
+```
 
 # ifconfig
 

@@ -11,7 +11,7 @@
 * **k** [`kill*`](#kill)
 * **l** [`less`](#less) [`ln`](#ln) [`local*`](#local) [`localectl`](systemd.md/#localectl) [`locate`](#locate) [`loginctl`](systemd.md/#loginctl) [`ls`](#ls) [`lsattr`](#lsattr) [`lsblk`](#lsblk) [`lsof`](#lsof)
 * **m** [`man`](#man) [`md5sum`](#md5sum) [`mkdir`](#mkdir) [`mkfs`](#mkfs) [`more`](#more) [`mount`](#mount)
-* **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohub`](#nohub)
+* **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohup`](#nohup)
 * **p** [`pandoc`](#pandoc) [`parted`](#parted) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
 * **r** [`read`](#read) [`rsync`](#rsync) [`runlevel`](#runlevel)
 * **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set*`](#set) [`shopt*`](#shopt) [`sort`](#sort) [`source*`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`su`](#su) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
@@ -973,8 +973,8 @@ $ unmount /mnt/c
 * `-t` 
 * `-p` 
 
-# nohub
-[disown](#disown)仅解决了后台任务[huponexit](#shopt)的问题, 但是还存在I/O的问题, nohub解决了这个问题
+# nohup
+[disown](#disown)仅解决了后台任务[huponexit](#shopt)的问题, 但是还存在I/O的问题, nohup解决了这个问题
 * nohup阻止[SIGHUP信号](#常用信号)发到进程
 * nohup关闭进程标准输入, 进程不再能够接收任何输入, 即使运行在前台
 * 进程重定向标准输出和标准错误到文件nohup.out

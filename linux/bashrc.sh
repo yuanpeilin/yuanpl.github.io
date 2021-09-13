@@ -221,7 +221,7 @@ alias manzh_CN='man -M /usr/share/man/zh_CN/'
 
 alias profile='sudo vim /etc/profile && source /etc/profile'
 alias s='source ~/.bashrc'
-alias shadowsocks='ss-local -c ~/Documents/ss.json 1>/dev/null &'
+alias shadowsocks='nohup ss-local -c ~/Documents/ss.json &'
 alias 'ss.json'='vim ~/Documents/ss.json'
 alias sctl='sudo systemctl'
 complete -F _systemctl sctl

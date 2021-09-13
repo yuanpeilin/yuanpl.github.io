@@ -388,7 +388,9 @@ $ df -Tx squashfs
 ```
 
 # disown
-将指定任务从后台任务列表(jobs命令的返回结果)之中移除, 但任务还会继续执行
+将指定任务从[后台任务](#后台任务)列表(jobs命令的返回结果)之中移除, 但任务还会继续执行
+
+disown解决了后台任务[huponexit](#shopt)的问题, 但是还存在I/O的问题
 
 ### 例子
 ```sh
@@ -407,6 +409,10 @@ $ disown -h
 # 根据jobId, 移出指定的后台任务
 $ disown %2
 $ disown -h %2
+
+# 后台任务继承当前session的I/O, 当session退出后但后台任务与I/O有交互, 就会报错, 需关掉后台任务的I/O
+$ node server.js > stdout.txt 2> stderr.txt < /dev/null &
+$ disown
 ```
 
 # du
@@ -968,7 +974,17 @@ $ unmount /mnt/c
 * `-p` 
 
 # nohub
-nohup命令不会自动把进程变为后台任务, 使用时所以必须加上`&`符号
+[disown](#disown)仅解决了后台任务[huponexit](#shopt)的问题, 但是还存在I/O的问题, nohub解决了这个问题
+* nohup阻止[SIGHUP信号](#常用信号)发到进程
+* nohup关闭进程标准输入, 进程不再能够接收任何输入, 即使运行在前台
+* 进程重定向标准输出和标准错误到文件nohup.out
+* nohup命令不会自动把进程变为后台任务, 使用时所以必须加上`&`符号
+
+### 例子
+```sh
+$ nohup node server.js &
+```
+
 
 # pandoc
 ### 例子

@@ -45,7 +45,7 @@ at now + 1munites
 ```
 
 # bg
-将处于后台的进程放到后台继续运行, 需指定任务序号
+将处于暂停状态[后台任务](#后台任务)在后台继续运行, 不指定任务序号则取最近的一个任务
 
 # cat
 ### 语法
@@ -537,7 +537,7 @@ $ ffmpeg -video_size 1920x1080 -framerate 60 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 # fg
-将处于后台的进程恢复到前台运行, 需指定任务序号
+将[后台任务](#后台任务)恢复到前台运行, 不指定任务序号则取最近的一个任务
 
 # file
 查看文件详细信息(主要用来查看编码)
@@ -802,7 +802,12 @@ $ convert -sample 50%x50% test.jpg test_modify.jpg
 ```
 
 # jobs
-查看处于后台的任务列表
+查看[后台任务](#后台任务)列表
+
+### 后台任务
+* 后台任务继承当前session的stdout和stderr
+* 后台任务不继承当前session的stdin
+* 退出session前台任务就结束是因为收到了[SIGHUP信号](#常用信号), 退出session是否发送SIGHUP信号由[huponexit](#shopt)决定
 
 # join
 
@@ -1292,7 +1297,7 @@ done
 
 ### 具体行为
 * **extglob** 打开扩展的通配(globbing)
-* **huponexit** 退出session时是否把SIGHUP信号发给后台任务, 默认为 `OFF` 不发送, 即退出session后台任务继续执行
+* **huponexit** 退出session时是否把[SIGHUP信号](#常用信号)发给后台任务, 默认为不发送, 即退出session后台任务继续执行
 
 # sort
 ### 语法

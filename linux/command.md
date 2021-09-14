@@ -58,6 +58,8 @@ at now + 1munites
 # chgrp
 
 # chkconfig
+System V时代init相关命令, 现代社会应使用[systemd](systemd.md)
+
 ### 语法
 * **`chkconfig [--add][--del][--list]<service_name>`**
     - `--add <service_name>` 增加httpd服务
@@ -1148,6 +1150,8 @@ abc
 # rsync
 
 # runlevel
+System V时代init相关命令, 现代社会应使用[systemd](systemd.md)
+
 ### 运行级别
 一共有7种运行级别
 - 0: 关机状态

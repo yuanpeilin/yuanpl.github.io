@@ -1,0 +1,68 @@
+alias g='clear && git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph -15 && echo ""'
+alias gg='clear && git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph --all -15 && echo ""'
+alias glo='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>" --graph'
+alias gloa='git log --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cd) <%an>" --graph --all'
+alias gbr='git branch -vv'
+alias gclone='git clone'
+alias gca='git commit --amend'
+alias gcma='git commit -a -m'
+alias gcm='git commit -m'
+alias gco='git checkout'
+alias gdi='git diff'
+alias gdc='git diff --cached'
+alias gdn='git diff --name-status'
+alias gds='git diff --stat --stat-width=150'
+alias gft='git fetch'
+alias gindex='git ls-files -s'
+alias glast='git show --stat HEAD'
+alias gmerge='git merge --no-ff -m'
+alias gpprint='git cat-file -p'
+alias gptags='git push --tags'
+alias gpull='git pull'
+alias gpush='git push'
+alias grf='git reflog'
+alias gre='git remote'
+alias grev='git remote -v'
+alias gsa='git stash --include-untracked'
+alias gsapply='git stash apply --index '
+alias gsclear='git stash clear'
+alias gsdrop='git stash drop'
+alias gslist='git stash list'
+alias gspop='git stash pop --index'
+alias gsshow='git stash show'
+alias gst=' clear && git status -bs'
+alias gtag='git tag'
+alias gtree='git ls-tree -r'
+alias gtype='git cat-file -t'
+
+gadd() {
+    git add "${1:-.}"
+    clear
+    git status -bs
+}
+
+gproxy() {
+    echo "before:"
+    git config http.proxy
+    git config https.proxy
+
+    git config --global http.proxy 'socks5://127.0.0.1:1080'
+    git config --global https.proxy 'socks5://127.0.0.1:1080'
+
+    echo "after:"
+    git config http.proxy
+    git config https.proxy
+}
+
+gunproxy() {
+    echo "before:"
+    git config http.proxy
+    git config https.proxy
+
+    git config --global --unset http.proxy
+    git config --global --unset https.proxy
+
+    echo "after:"
+    git config http.proxy
+    git config https.proxy
+}

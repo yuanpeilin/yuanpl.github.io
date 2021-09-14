@@ -1,0 +1,13 @@
+#!/bin/bash
+
+_lnchk(){
+    local linked_count=$(ls -l "$1" | awk '{print $2}')
+    if (( ${linked_count} == 1 )); then
+        [[ -f "$2" ]] && rm "$2"
+        ln "$1" "$2"
+        echo "link $2 has broken, delete it and link again. Source file path: \e[01;34m$1\e[00m"
+    fi
+}
+
+_lnchk  /home/ypl/workspace/yuanpeilin.github.io/linux/bashrc.sh  /home/ypl/.bashrc
+_lnchk  /home/ypl/workspace/yuanpeilin.github.io/linux/src/vimrc  /home/ypl/.vimrc

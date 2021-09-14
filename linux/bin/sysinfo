@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Kernel:  $(uname -r)"
+echo "OS:  $(grep -E '^NAME=' /etc/os-release | cut -d '"' -f 2)"
+echo "OS Version:  $(grep -E '^VERSION=' /etc/os-release | cut -d '"' -f 2)"
+echo "CPU:  $(grep 'model name' /proc/cpuinfo | sort -u | tr '\t' ' ' | cut -d ' ' -f 4-)"
+echo "CPU Cores:  $(grep 'core id' /proc/cpuinfo | sort -u | wc -l)"
+echo "CPU Threads:  $(grep 'processor' /proc/cpuinfo | sort -u | wc -l)"
+echo ""
+free -h
+echo ""
+df -ht ext4
+df -hti ext4

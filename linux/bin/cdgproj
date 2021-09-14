@@ -1,0 +1,24 @@
+#!/bin/bash
+
+clear
+echo -e '\e[01m--------------------\e[00m'
+
+git log -9 --format="%C(yellow)%h%Creset %C(auto)%d%Creset %s %C(blue)(%cr) <%an>" --graph
+echo -e '\e[01m--------------------\e[00m'
+
+if [[ -z $(git stash list) ]]; then
+    echo 'no stash'
+else
+    git stash list
+fi
+echo -e '\e[01m--------------------\e[00m'
+
+git branch -vv
+echo -e '\e[01m--------------------\e[00m'
+
+if [[ -z $(git status -s) ]]; then
+    echo 'No file changed'
+else
+    git status -s
+fi
+echo -e '\e[01m--------------------\e[00m'

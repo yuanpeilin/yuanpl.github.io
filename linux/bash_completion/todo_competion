@@ -1,0 +1,21 @@
+_todo() {
+    local cur prev opts task_numbers
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="-a --add -c --clean -d --done -h --help -i --insert -l --list -L --LIST -r --remove"
+    task_numbers=$(todo -l | awk '{ if(NF > 1){printf("%s ", $2)} }')
+
+    case "${prev}" in
+        -a | --add) return ;;
+        -c | --clean) return ;;
+        -d | --done) COMPREPLY=( $(compgen -W "${task_numbers}" -- ${cur}) ) ;;
+        -h | --help) return ;;
+        -i | --insert) return ;;
+        -l | --list) return ;;
+        -L | --LIST) return ;;
+        -r | --remove) COMPREPLY=( $(compgen -W "${task_numbers}" -- ${cur}) ) ;;
+        todo) COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) ) ;;
+        # --) COMPREPLY=( $(compgen -df -- ${cur}) ) ;;
+    esac
+}
+complete -F _todo todo

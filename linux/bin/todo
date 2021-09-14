@@ -1,4 +1,6 @@
 #!/bin/bash
+ERROR_WRONG_OPTION=1
+ERROR_WRONG_ARGUMENT_COUNT=2
 path=/var/todo/todo
 
 todo_list() {
@@ -9,8 +11,8 @@ todo_list() {
         status=${line:0:1}
         date=${line:2:10}
         content=${line:13}
-        [[ "$1" != "time" ]] && date=""
-        if [[ "${status}" == "U" ]]; then
+        [[ "$1"x != "time"x ]] && date=""
+        if [[ "${status}"x == "U"x ]]; then
             printf "\e[01m %2s %s %s %s \n\e[00m" "${i}" "${date}" "[ ]" "${content}"
         elif [[ "$#" == 1 ]]; then
             printf "\e[09m %2s %s %s %s \n\e[00m" "${i}" "${date}" "[*]" "${content}"
@@ -72,8 +74,6 @@ todo_remove() {
 todo_getopt() {
     local parameters=$(getopt -o a:cd:hiLlr: --long add:,clean,done:,help,insert,LIST,list,remove: -n "$0" -- "$@" 2>/dev/null)
 
-    [[ "$#" == 0 ]] && todo_help && exit 1
-
     while true; do
         case "$1" in
         -a | --add) todo_add "$@" && shift 2 ;;
@@ -85,7 +85,7 @@ todo_getopt() {
         -L | --LIST) todo_list "time" && shift ;;
         -r | --remove) todo_remove "$@" && shift 2 ;;
         --) break ;;
-        *) break && exit 2 ;;
+        *) break && return "$ERROR_WRONG_OPTION" ;;
         esac
     done
 }
@@ -93,14 +93,10 @@ todo_getopt() {
 main() {
     if [[ "$#" != 1 && "$#" != 2 ]]; then
         todo_help
-        exit 3
+        return "$ERROR_WRONG_ARGUMENT_COUNT"
     else
         todo_getopt "$@"
     fi
 }
 
 main "$@"
-# 由于执行下面的unset之后$?会变成0, 所以此处需要一个临时变量记录main的$?
-temp="$?"
-unset path todo_list todo_add todo_clean todo_done todo_help todo_insert todo_remove todo_getopt main
-exit "${temp}"

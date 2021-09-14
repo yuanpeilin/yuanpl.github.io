@@ -13,7 +13,6 @@ out/
 .project
 .settings/
 .springBeans
-bin/
 
 # Package Files
 *.jar

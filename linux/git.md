@@ -415,7 +415,7 @@ git config --global log.date short #枚举值见 git log --date
 │   ├── commit-msg.sample
 │   └── ......
 ├── info/
-├── logs/   <日志>
+├── logs/   <日志, reflog有关>
 ├── objects/   <存储对象>
 │   ├── d0/
 │   │   ├── 17c08b44aa8abf163e98693d57536a9cfc863f   <二进制文件>

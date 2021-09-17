@@ -226,6 +226,13 @@ for (( i=1,num=0;i<=100;i++ ));do
 done
 echo sum=$sum
 ```
+```sh
+for i in /etc/profile.d/*.sh; do
+    if [ -r $i ]; then
+        . $i
+    fi
+done
+```
 
 # while
 ### 语法

@@ -64,6 +64,13 @@ fi
 clear
 todo -l
 
+_ssh_fq() {
+    if [[ ! -z $(ps -ef | grep $V | grep 'ssh -Nf -D') ]]; then
+        echo 'SSH '
+    elif [[ ! -z $(jobs | grep 'ss-local') ]]; then
+        echo 'SHA '
+    fi
+}
 _git_branch() {
     branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //"`"
     [[ "${branch}"x != ""x ]] && echo "($branch)"
@@ -75,7 +82,7 @@ _ps_color(){
         echo '31'
     fi
 }
-PS1='\e[01;$(_ps_color)m\w$(_git_branch)\$ \e[0m'
+PS1='\e[00;33m$(_ssh_fq)\e[00m\e[01;$(_ps_color)m\w$(_git_branch)\$ \e[0m'
 
 # +----------------------------------+
 # |            USER init             |
@@ -85,6 +92,7 @@ export V='144.202.89.76'
 
 alias sv='ssh root@$VULTR'
 alias svultr='ssh root@$VULTR'
+alias sfq='ssh -Nf -D 1080 root@$V 2>/dev/null'
 alias yuanpeilin='cd ~/workspace/yuanpeilin.github.io/ && cdgproj'
 alias sql="mysql -uroot -p980620 --prompt='\u@\h [\d]> ' --database=must"
 

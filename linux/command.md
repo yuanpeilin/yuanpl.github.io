@@ -143,9 +143,9 @@ helpp
 
 # complete
 和自动补全有关的文件为
-* /etc/bash_completion
-* /usr/share/bash-completion/
+* */etc/bash_completion* -> */usr/share/bash-completion/bash_completion*
 * /etc/bash_completion.d/
+* /usr/share/bash-completion/
 
 parameter    | description
 ------------ | -----------

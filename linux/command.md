@@ -1047,48 +1047,46 @@ $ pgrep -l -U teacher -t tty1
 * `-f` 
 
 # ps
-### 语法
-**`ps -aux`**
-* `a` 显示当前终端下的所有进程信息
-* `u` 使用以用户为主的格式输出进程信息
-* `x` 显示当前用户在所有终端下的进程信息
-
 ### 例子
-**VSZ(Virtual Memory Size)`**:  It includes all memory that the process can access, including memory that is swapped out, memory that is allocated, but not used, and memory that is from shared libraries.  
-**RSS(Resident Set Size)**: used to show how much memory is allocated to that process and is in RAM. It does not include memory that is swapped out.  
+```sh
+$ ps aux
+用户名  PID  CPU百分比  物理内存  虚拟内存  实际内存  控制终端  状态   被触发启动的时间  已执行时间
+USER    PID  %CPU       %MEM      VSZ       RSS       TTY       STAT   START             TIME  COMMAND
+root     1   0.0        0.3       225384    9216      ?         Ss     Mar27             0: 03 /sbin/init auto noprompt
+root     2   0.0        0.0       0         0         ?         S      Mar27             0: 00 [kthreadd]
 
-<br>
+$ ps -ef
+UID          PID    PPID  C STIME TTY      TIME     CMD
+root           1       0  0 13:32 ?        00:00:07 /sbin/init splash
+root           2       0  0 13:32 ?        00:00:00 [kthreadd]
+```
 
-`STAT` 由两个字符组成的状态码, 用于表示当前进程的状态  
-第一个字符如下:  
+### 名词解释
+##### VSZ(Virtual Memory Size)
+It includes all memory that the process can access, including memory that is swapped out, memory that is allocated, but not used, and memory that is from shared libraries.
+
+##### RSS(Resident Set Size)
+used to show how much memory is allocated to that process and is in RAM. It does not include memory that is swapped out.
+
+##### STAT
+`STAT` 由两个字符组成的状态码, 用于表示当前进程的状态, 两个字符说明分别如下:
 
 缩写 | 状态                              | 状态     | 说明
-:--- | :-------------------------------- | :------- | :--
+---- | --------------------------------- | -------- | ----
 D    | uninterruptible sleep(usually IO) | 不可中断 | 收到信号不唤醒和不可运行, 进程必须等待直到有中断发生
 R    | runnable(on run queue)            | 运行     | 正在运行或在运行队列中等待
 S    | sleeping                          | 中断     | 休眠中, 受阻, 在等待某个条件的形成或接受到信号
 T    | traced or stopped                 | 停止     | 进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行
 Z    | zombie                            | 僵死     | 进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放
 
-第二个字符如下:  
-
 缩写 | 说明
-:--- | :---
+---- | ----
 <    | 进程正以高优先级运行
 N    | 进程正以低优先级运行
 L    | 进程在内存中存在锁定页面
 s    | 进程是会话领导者(session leader)
 l    | 进程是多线程的
 \+   | 进程正在前台运行
-
-<br>
-
-```
-用户名  PID  CPU百分比  物理内存  虚拟内存  实际内存  控制终端  状态   被触发启动的时间  已执行时间
-USER    PID  %CPU       %MEM      VSZ       RSS       TTY       STAT   START             TIME COMMAND
-root     1   0.0        0.3       225384    9216      ?         Ss     Mar27             0: 03 /sbin/init auto noprompt
-root     2   0.0        0.0       0         0         ?         S      Mar27             0: 00 [kthreadd]
-```
 
 # pstree
 ### 语法

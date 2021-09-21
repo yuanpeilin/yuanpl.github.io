@@ -67,7 +67,7 @@ todo -l
 _ssh_fq() {
     if [[ ! -z $(ps -ef | grep $V | grep 'ssh -Nf -D') ]]; then
         echo 'SSH '
-    elif [[ ! -z $(jobs | grep 'ss-local') ]]; then
+    elif [[ ! -z $(ps -ef | grep 'ss.json' | grep 'ss-local') ]]; then
         echo 'SHA '
     fi
 }

@@ -64,25 +64,27 @@ fi
 clear
 todo -l
 
-_ssh_fq() {
+_fq() {
+    temp_status="$?"
     if [[ ! -z $(ps -ef | grep $V | grep 'ssh -Nf -D') ]]; then
         echo 'SSH '
     elif [[ ! -z $(ps -ef | grep 'ss.json' | grep 'ss-local') ]]; then
         echo 'SHA '
+    fi
+    return "$temp_status"
+}
+_ps_color() {
+    if (( "$?" == 0 )); then
+        echo '32'
+    else
+        echo '31'
     fi
 }
 _git_branch() {
     branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //"`"
     [[ "${branch}"x != ""x ]] && echo "($branch)"
 }
-_ps_color(){
-    if (( $? == 0 )); then
-        echo '32'
-    else
-        echo '31'
-    fi
-}
-PS1='\e[00;33m$(_ssh_fq)\e[00m\e[01;$(_ps_color)m\w$(_git_branch)\$ \e[0m'
+PS1='\e[33m$(_fq)\e[00m\e[01;$(_ps_color)m\w\e[00m\e[01;36m$(_git_branch)\e[00m\e[00;02m\$\e[00m '
 
 # +----------------------------------+
 # |            USER init             |
